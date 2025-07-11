@@ -4,18 +4,30 @@ import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { fetchMovies } from "@/services/api";
 import useFetch from "@/services/useFetch";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
-import { ActivityIndicator, FlatList, Image, View, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 
 const search = () => {
-   const [SearchQuery, setSearchQuery] = useState('');
+  const [SearchQuery, setSearchQuery] = useState("");
 
   const {
-      data: movies,
-      loading,
-      error,
-    } = useFetch(() => fetchMovies({ query: SearchQuery }), false);
+    data: movies,
+    loading,
+    error,
+    refetch: loadMovies,
+    reset,
+  } = useFetch(() => fetchMovies({ query: SearchQuery }), false);
+
+  useEffect(() => {
+    const func = async () => {
+    if(SearchQuery.trim()) {
+     await loadMovies();
+    } else {
+      reset();
+    }
+  }
+  func();
+  }, [SearchQuery])
 
   return (
     <View className="flex-1">
@@ -38,29 +50,30 @@ const search = () => {
         contentContainerStyle={{ paddingBottom: 100 }}
         ListHeaderComponent={
           <>
-          <View className="w-full flex-row justify-center mt-20 items-center">
-            <Image
-              source={icons.logo}
-              className="w-12 h-10"
-              resizeMode="contain"
-            />
-          </View>
-          <View className="my-5">
-            <SearchBar placeholder="Search Movies..." value={SearchQuery} onChangeText={(text:string)=>setSearchQuery(text)}/>
-          </View>
-          {loading && (
-            <ActivityIndicator size="large" color="#0000ff"/>
-          )}
-          {error && (
-            
+            <View className="w-full flex-row justify-center mt-20 items-center">
+              <Image
+                source={icons.logo}
+                className="w-12 h-10"
+                resizeMode="contain"
+              />
+            </View>
+            <View className="my-5">
+              <SearchBar
+                placeholder="Search Movies..."
+                value={SearchQuery}
+                onChangeText={(text: string) => setSearchQuery(text)}
+              />
+            </View>
+            {loading && <ActivityIndicator size="large" color="#0000ff" />}
+            {error && (
               <Text className="text-red-500 px-5 my-3">Error: {error}</Text>
-          )}
-          {!loading && !error && SearchQuery.trim() && movies?.length > 0&& (
-            <Text className="text-xl text-black font-bold">
-              Search Results for {' '}
-              <Text className="text-accent ">{SearchQuery}</Text>
-            </Text>
-          )}
+            )}
+            {!loading && !error && SearchQuery.trim() && movies?.length > 0 && (
+              <Text className="text-xl text-black font-bold">
+                Search Results for{" "}
+                <Text className="text-accent ">{SearchQuery}</Text>
+              </Text>
+            )}
           </>
         }
       />
