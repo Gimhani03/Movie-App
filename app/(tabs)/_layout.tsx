@@ -4,27 +4,28 @@ import { Tabs } from "expo-router";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
 
-const TabIcon = ({focused,icon,title }: any) =>{
-  if(focused) {
-  return(
-   <ImageBackground source={images.highlight} 
-              className="flex flex-row w-full flex-1 min-w-[112px] min-h-16 mt-5 mr-2 justify-center items-center rounded-full overflow-hidden "
-              >
-                <Image
-                  source={icon}
-                 
-                  tintColor="#151312"
-                  className="size-5 ml-3"
-                  
-                />
-                <Text className="text-secondary text-base font-semibold ml-2">{title}</Text>
-              </ImageBackground>
-  )
-} return (
-  <View className="size-full justify-center items-center mt-5 rounded-full">
-    <Image source={icon} tintColor="#A8B5DB" className="size-5" />
-  </View>
-  )
+const TabIcon = ({focused, icon, title}: any) => {
+  if (focused) {
+    return (
+      <ImageBackground 
+        source={images.highlight} 
+        className="flex flex-row w-full flex-1 min-w-[112px] min-h-16 mt-5 mr-2 justify-center items-center rounded-full overflow-hidden"
+      >
+        <Image
+          source={icon}
+          tintColor="#151312"
+          className="size-5 ml-3"
+        />
+        <Text className="text-secondary text-base font-semibold ml-2">{title}</Text>
+      </ImageBackground>
+    );
+  }
+  
+  return (
+    <View className="size-full justify-center items-center mt-5 rounded-full">
+      <Image source={icon} tintColor="#A8B5DB" className="size-5" />
+    </View>
+  );
 }
 
 const _Layout = () => {
@@ -47,7 +48,7 @@ const _Layout = () => {
         position: 'absolute',
         overflow: 'hidden',
         borderWidth:1,
-        borderColor: '0f0d23',
+        borderColor: '#0f0d23',
       },
     }}>
       <Tabs.Screen
