@@ -19,14 +19,14 @@ const search = () => {
   } = useFetch(() => fetchMovies({ query: SearchQuery }), false);
 
   useEffect(() => {
-    const func = async () => {
+    const timeoutId = setTimeout(async () => {
     if(SearchQuery.trim()) {
      await loadMovies();
     } else {
       reset();
     }
-  }
-  func();
+  }, 500);
+    return () => clearTimeout(timeoutId);
   }, [SearchQuery])
 
   return (
