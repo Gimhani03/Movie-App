@@ -24,9 +24,7 @@ const search = () => {
       if (SearchQuery.trim()) {
         await loadMovies();
         // Only update search count after movies are loaded and if they exist
-        if (movies?.length > 0 && movies[0]) {
-          await updateSearchCount(SearchQuery, movies[0]);
-        }
+        
       } else {
         reset();
       }
@@ -34,6 +32,12 @@ const search = () => {
     
     return () => clearTimeout(timeoutId);
   }, [SearchQuery]);
+
+  useEffect(() => {
+    if (movies?.length > 0 && movies[0]){
+         updateSearchCount(SearchQuery, movies[0]);
+  }
+  }, [movies]);
 
   return (
     <View className="flex-1">
