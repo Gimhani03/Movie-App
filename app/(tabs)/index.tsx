@@ -22,6 +22,7 @@ export default function Index() {
     loading: moviesLoading,
     error: moviesError,
   } = useFetch(() => fetchMovies({ query: "" }));
+  
   return (
     <View className="flex-1 bg-primary">
       <Image source={images.bg} className="absolute w-full z-0" />
@@ -44,19 +45,21 @@ export default function Index() {
             <SearchBar
               onPress={() => router.push("/search")}
               placeholder="Search for movies"
+              value=""
+              onChangeText={() => {}}
             />
             <>
               <Text className="text-lg text-black font-bold mt-5 mb-3">
                 Latest Movies
               </Text>
               <FlatList
-                data={movies}
+                data={movies || []}
                 renderItem={({ item }) => (
                   <MovieCard
                   {...item}
                   />
                 )}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.id.toString()}
                 numColumns={3}
                 columnWrapperStyle={{
                   justifyContent: "flex-start",
