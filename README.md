@@ -1,26 +1,40 @@
 # 🎬 Movie App
 
-A modern, cross-platform movie discovery app built with React Native, Expo, and TypeScript. Browse popular movies, search for your favorites, and explore detailed movie information with a beautiful, intuitive interface.
+### 🚧 Future Implementations
+- 💾 **Save Movies**: Bookmark your favorite movies for later viewing *(Coming Soon)*
+- 👤 **User Profiles**: Personalized user profiles and preferences *(Coming Soon)*
+- 📊 **Advanced Analytics**: Detailed viewing statistics and recommendations *(Planned)*ern, cross-platform movie discovery app built with React Native, Expo, and TypeScript. Browse popular movies, search for your favorites, and explore detailed movie information with a beautiful, intuitive interface.
 
 ## ✨ Features
 
-- 🎭 **Browse Popular Movies**: Discover trending and popular movies
-- 🔍 **Smart Search**: Search for movies by title with real-time results
-- 📱 **Cross-Platform**: Works on iOS, Android, and Web
-- 🎨 **Modern UI**: Beautiful interface with TailwindCSS styling
+- 🎭 **Browse Popular Movies**: Discover trending and popular movies from TMDB
+- 🔍 **Smart Search**: Search for movies by title with real-time results and debounced input
+- 📱 **Cross-Platform**: Works seamlessly on iOS, Android, and Web
+- 🎨 **Modern UI**: Beautiful interface with NativeWind (TailwindCSS) styling
 - 📄 **Movie Details**: View comprehensive movie information including ratings, release dates, and descriptions
-- 💾 **Save Movies**: Bookmark your favorite movies for later viewing
-- 🌐 **TMDB Integration**: Powered by The Movie Database (TMDB) API
+- 🏆 **Trending Rankings**: Visual ranking system for trending movies with gradient overlays
+- � **Search Analytics**: Track search queries and movie interactions with Appwrite backend
+- 🎯 **Interactive Navigation**: Smooth navigation between screens with Expo Router
+- ⚡ **Performance Optimized**: Fast loading with proper error handling and loading states
+- 🎪 **Rich Components**: Custom movie cards, search bars, and trending cards with masked views
+
+### 🚧 Future Implementations
+- �*�💾 �*Save Movies**: Bookmark your favorite movies for later viewing *(Coming Soon)*
+- 👤 **User Profiles**: Personalized user profiles and preferences *(Coming Soon)*
+- 📊 **Advanced Analytics**: Detailed viewing statistics and recommendations *(Planned)*
 
 ## 🚀 Tech Stack
 
-- **Framework**: React Native with Expo
-- **Language**: TypeScript
+- **Framework**: React Native with Expo SDK 53
+- **Language**: TypeScript with strict type checking
 - **Styling**: NativeWind (TailwindCSS for React Native)
 - **Navigation**: Expo Router with file-based routing
-- **API**: The Movie Database (TMDB) API
-- **State Management**: React Hooks
-- **Development**: ESLint, TypeScript, Metro bundler
+- **API**: The Movie Database (TMDB) API v3
+- **Backend**: Appwrite for search analytics and data persistence
+- **State Management**: React Hooks with custom useFetch hook
+- **UI Components**: React Native Masked View for gradient effects
+- **Development Tools**: ESLint, TypeScript, Metro bundler
+- **Image Handling**: Expo Image with optimized caching
 
 ## 📱 App Structure
 
@@ -28,20 +42,29 @@ A modern, cross-platform movie discovery app built with React Native, Expo, and 
 app/
 ├── (tabs)/               # Tab navigation screens
 │   ├── index.tsx        # Home screen with popular movies
-│   ├── search.tsx       # Movie search functionality
-│   ├── saved.tsx        # Saved movies list
-│   └── profile.tsx      # User profile screen
+│   ├── search.tsx       # Movie search with debounced input
+│   ├── saved.tsx        # Saved movies (Future Implementation)
+│   └── profile.tsx      # User profile (Future Implementation)
 ├── movies/
 │   └── [id].tsx         # Dynamic movie details screen
 └── _layout.tsx          # Root layout with navigation setup
 
 components/
 ├── MovieCard.tsx        # Reusable movie card component
-└── SearchBar.tsx        # Search input component
+├── SearchBar.tsx        # Search input with controlled state
+└── TrendingCard.tsx     # Trending movie card with ranking overlay
 
 services/
 ├── api.ts               # TMDB API configuration and functions
+├── appwrite.ts          # Appwrite backend integration
 └── useFetch.ts          # Custom hook for data fetching
+
+interfaces/
+└── interfaces.d.ts      # TypeScript type definitions
+
+constants/
+├── icons.ts             # Icon asset exports
+└── images.ts            # Image asset exports
 ```
 
 ## 🛠️ Installation & Setup
@@ -68,17 +91,30 @@ npm install
 
 ### 3. Environment Setup
 
-Create a `.env` file in the root directory and add your TMDB API key:
+Create a `.env` file in the root directory and add your API keys:
 
 ```env
+# Required: TMDB API Configuration
 EXPO_PUBLIC_MOVIE_API_KEY=your_tmdb_api_key_here
+
+# Optional: Appwrite Configuration (for search analytics)
+EXPO_PUBLIC_APPWRITE_PROJECT_ID=your_appwrite_project_id
+EXPO_PUBLIC_APPWRITE_DATABASE_ID=your_appwrite_database_id
+EXPO_PUBLIC_APPWRITE_COLLECTION_ID=your_appwrite_collection_id
 ```
 
-To get a TMDB API key:
+**Getting a TMDB API key:**
 1. Visit [TMDB website](https://www.themoviedb.org/)
 2. Create an account
 3. Go to Settings > API
 4. Request an API key
+
+**Appwrite Setup (Optional):**
+Appwrite is used for search analytics. The app will work without it, but search tracking won't be available.
+1. Create an [Appwrite](https://appwrite.io/) account
+2. Create a new project
+3. Set up a database with a collection for search tracking
+4. Add the credentials to your `.env` file
 
 ### 4. Start the development server
 
@@ -109,19 +145,37 @@ npm run lint       # Run ESLint for code quality
 ## 🏗️ Key Components
 
 ### MovieCard Component
-Displays movie information in a card format with:
-- Movie poster image
-- Title
-- Clickable navigation to movie details
+Displays movie information in a grid card format with:
+- High-quality movie poster images from TMDB
+- Movie title with text truncation
+- Star ratings with visual indicators
+- Clickable navigation to detailed movie views
+
+### TrendingCard Component
+Specialized card for trending movies featuring:
+- Ranking overlay with gradient masked numbers
+- Custom styling with React Native Masked View
+- Compact horizontal layout for trending sections
+- Interactive navigation to movie details
+
+### SearchBar Component
+Interactive search input with:
+- Controlled state management
+- Customizable placeholder text
+- Integrated search icon
+- Responsive design for all screen sizes
 
 ### API Service
-Handles all TMDB API interactions:
-- Fetching popular movies
-- Searching movies by query
-- Retrieving detailed movie information
+Comprehensive TMDB API integration:
+- Fetching popular movies with pagination
+- Real-time movie search with query parameters
+- Detailed movie information retrieval
+- Proper error handling and response validation
 
 ### Custom Hooks
-- `useFetch`: Manages API calls and loading states
+- `useFetch`: Advanced data fetching with loading states, error handling, and refetch capabilities
+- Automatic cleanup and memory leak prevention
+- Flexible configuration for different API endpoints
 
 ## 🎨 Styling
 
@@ -140,27 +194,47 @@ This project uses **NativeWind**, which brings TailwindCSS to React Native:
 
 ## 🔧 Configuration Files
 
-- `expo.json`: Expo configuration
-- `tailwind.config.js`: TailwindCSS customization
-- `tsconfig.json`: TypeScript compiler options
-- `babel.config.js`: Babel transpilation settings
-- `metro.config.js`: Metro bundler configuration
+- `app.json`: Expo app configuration and metadata
+- `expo-env.d.ts`: Expo environment type definitions
+- `tailwind.config.js`: NativeWind/TailwindCSS customization
+- `nativewind-env.d.ts`: NativeWind type definitions
+- `tsconfig.json`: TypeScript compiler options and paths
+- `babel.config.js`: Babel transpilation settings for React Native
+- `metro.config.js`: Metro bundler configuration for asset handling
+- `eslint.config.js`: ESLint rules and code quality standards
 
 ## 🚀 Building for Production
 
-### For Android:
+### Modern Expo Development Build:
 ```bash
-npx expo build:android
+# For Android
+npx expo run:android --variant release
+
+# For iOS  
+npx expo run:ios --configuration Release
 ```
 
-### For iOS:
+### EAS Build (Recommended):
 ```bash
-npx expo build:ios
+# Install EAS CLI
+npm install -g @expo/eas-cli
+
+# Configure and build
+eas build --platform android
+eas build --platform ios
 ```
 
-### For Web:
+### Web Export:
 ```bash
 npx expo export:web
+```
+
+### Legacy Build (Deprecated):
+```bash
+# Note: expo build commands are deprecated
+# Use EAS Build or development builds instead
+npx expo build:android  # Legacy
+npx expo build:ios      # Legacy
 ```
 
 ## 🤝 Contributing
