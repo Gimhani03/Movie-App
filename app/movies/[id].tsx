@@ -79,10 +79,10 @@ const MovieDetails = () => {
         onPress={router.back}>
         <Image
           source={icons.arrow}
-          className="size-5 mr-1 mt-0.5 rotate-180"
+          className="size-5 mr-2 mt-0.5 rotate-180"
           tintColor="#fff"
         />
-        <Text className="text-black font-semibold text-base">Go Back</Text>
+        <Text className="text-black font-semibold text-base mr-5">Go Back</Text>
       </TouchableOpacity>
     </View>
   );
